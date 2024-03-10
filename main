@@ -1,0 +1,28 @@
+const int hygrometerPin = 2; // Analog pin for the hygrometer sensor
+const int pumpPin = 3;         // Digital pin to control the relay module
+
+int dryThreshold = 450;  // Adjust this value for your specific sensor and needs
+int wetThreshold = 700;  // Adjust this value for your specific sensor and needs
+
+void setup() {
+  pinMode(pumpPin, OUTPUT);
+  digitalWrite(pumpPin, LOW);  // Turn off the pump initially
+  Serial.begin(9600);
+}
+
+void loop() {
+  int moistureLevel = analogRead(hygrometerPin);
+  Serial.println(moistureLevel);
+
+  if (moistureLevel >dryThreshold) {
+    // Soil is dry, turn on the pump
+    digitalWrite(pumpPin, HIGH);
+    Serial.println("Soil is dry. Pump is ON.");
+  } else if (moistureLevel < wetThreshold) {
+    // Soil is wet, turn off the pump
+    digitalWrite(pumpPin, LOW);
+    Serial.println("Soil is wet. Pump is OFF.");
+  }
+
+  delay(1000); // Wait for a second before checking again
+}
